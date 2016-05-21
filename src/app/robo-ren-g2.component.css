@@ -1,0 +1,8 @@
+.list-container{
+    background-color: gray;
+    position: relative;
+    height: 500px;
+    width: 200px;
+    float: left;
+   margin-left: 50px; 
+}

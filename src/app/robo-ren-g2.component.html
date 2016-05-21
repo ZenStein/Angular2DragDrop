@@ -1,0 +1,27 @@
+<style>
+.is-selected{
+    background-color: lightblue;
+}
+.original{
+    background-color: gray;
+}
+.dragged-over{
+    background-color: white;
+
+}
+</style>
+<h1>
+ here  {{title}}
+</h1>
+<div>{{listsData | json}}</div>
+<div class="list-container" *ngFor="let lists of listsData; let i = index">
+    <div id="{{lists.listUid}}">
+    <h1>{{lists.header}}</h1>
+    <ul>
+      <li  [ngClass]="{'is-selected': listsData[i].listItems[j].selected}"  *ngFor="let listItem of lists.listItems; let j = index" id="{{i}}_{{j}}"  csDragger>{{listItem.viewText}}</li>
+    </ul>
+    </div>
+</div>
+
+
+
