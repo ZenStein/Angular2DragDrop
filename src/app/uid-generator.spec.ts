@@ -13,34 +13,34 @@ describe('UidGenerator', () => {
   });
   it('shoud generate an \'A\' when passed a 0', () => {
       let ctyle = new UidGenerator() 
-    expect(ctyle.generate(0)).toEqual('A');
+    expect(ctyle.generate(0)).toEqual('0');
   });
   it('should be AA given(26)', () => {
       let ctyle = new UidGenerator() 
-    expect(ctyle.generate(26)).toEqual('AA');
+    expect(ctyle.generate(26)).toEqual('00');
   });
   it('should be A_0 given(0,0)', () => {
       let ctyle = new UidGenerator() 
-    expect(ctyle.generate(0,0)).toEqual('A_0');
+    expect(ctyle.generate(0,0)).toEqual('0_0');
   });
-  it('shoud generate an \'A_0\' when passed (0, 0)', () => {
+  it('shoud generate an \'0_0\' when passed (0, 0)', () => {
       let ctyle = new UidGenerator() 
-    expect(ctyle.generate(0,1)).toEqual('A_1');
+    expect(ctyle.generate(0,1)).toEqual('0_1');
   });
-  it('should start with AA when passed 26', () => {
+  it('should start with 00 when passed 26', () => {
       let ctyle = new UidGenerator() 
-    expect(ctyle.generate(26,1)).toEqual('AA_1');
+    expect(ctyle.generate(26,1)).toEqual('00_1');
   });
-  it('should start with BB when passed 27', () => {
+  it('should start with 11 when passed 27', () => {
       let ctyle = new UidGenerator() 
-    expect(ctyle.generate(27,1)).toEqual('BB_1');
+    expect(ctyle.generate(27,1)).toEqual('11_1');
   });
-  it('should start with BB when passed 27', () => {
+  it('should start with 000 when passed 52', () => {
       let ctyle = new UidGenerator() 
-    expect(ctyle.generate(52,0)).toEqual('AAA_0');
+    expect(ctyle.generate(52,0)).toEqual('000_0');
   });
-  it('should be ZZ_5 given(51,5)', () => {
+  it('should be 2525_5 given(51,5)', () => {
       let ctyle = new UidGenerator() 
-    expect(ctyle.generate(51,5)).toEqual('ZZ_5');
+    expect(ctyle.generate(51,5)).toEqual('2525_5');
   });
 });

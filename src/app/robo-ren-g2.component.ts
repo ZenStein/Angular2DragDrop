@@ -1,52 +1,55 @@
-import { Component, Input } from '@angular/core';
-        
+import { Component } from '@angular/core';
+import { ListItem } from './list-item.directive'        
 import { CsLiDragger } from './cs-li-dragger.directive'
 import {DragDropModelTemplate} from './drag-drop-model-template';
 import { ListModelService } from './list-model.service';
 
 @Component({
     host:{
-  '(dragover)':'onDragover($event)',
-  '(dragenter)':'onDragEnter($event)',
-  '(dragend)':'onDragEnd($event)',
-  '(dragleave)':'onDragLeave($event)',
-  '(dragstart)':'onDragStart($event)',
-  '(drop)':'onDrop($event)',
-  '(click)':'onClick($event)'    
+  '(dragstart)' : 'onDragStart($event)',
+  '(dragenter)' : 'onDragEnter($event)',
+   '(dragover)' : 'onDragOver($event)',
+  '(dragleave)' : 'onDragLeave($event)',
+       '(drop)' : 'onDrop($event)',
+    '(dragend)' : 'onDragEnd($event)',
+      '(click)' : 'onClick($event)'    
     },
   moduleId: module.id,
   selector: 'robo-ren-g2-app',
-  directives: [CsLiDragger],
+  directives: [[CsLiDragger],[ListItem]],
   templateUrl: 'robo-ren-g2.component.html',
   styleUrls: ['robo-ren-g2.component.css']
 })
 export class RoboRenG2AppComponent {
 
 
-//@Input set somefunc(){ }
-
   selectionsMap =  new Map()
   modelService = new ListModelService()
-//console.log(this.x)
+    //console.log(this.x)
   data = [ ['header1','AAA','BBB'],
            ['List 2','CCC','DDD'],
            ['header3','XXX','ZZZ'] 
          ]
-  templateBuilder = new DragDropModelTemplate(this.data)
-  //this.modelService.model = this.templateBuilder.conformModel()
-  listsData = this.modelService.model = this.templateBuilder.conformModel() 
-  title = 'robo-ren-g2 works!'
-  isValidDrop = false
-  dragDidStartOn  
-  didDropOn
-
-  onDragStart(ev){
-  this.modelService.doSet(ev.target.id,'selected',true)
-  let transferData = this.modelService.selectedItems()
-      this.dragDidStartOn = ''
+    templateBuilder = new DragDropModelTemplate(this.data)
+    //this.modelService.model = this.templateBuilder.conformModel()
+    listsData = this.modelService.model = this.templateBuilder.conformModel() 
+    title = 'robo-ren-g2 works!'
+    isValidDrop = false
+    dragDidStartOn  
+    isbeingDrugOver = false
+    didDropOn
+    isSelected
+    listItemLocation(...params){
+        console.log('location result below  ')
+        console.log(params)
+    }
+    onDragStart(ev){
       ev.dataTransfer.dropEffect = 'move'
       ev.dataTransfer.effectAllowed = 'move'
-      this.dragDidStartOn = ev.target.id
+        console.log('ev')
+        console.log(ev)
+      this.modelService.doSet(ev.target.id,'selected',true)
+      let transferData = this.modelService.mapSelectedInModel()
       ev.dataTransfer.setData('dragDidStartOn',transferData)
   }
   onDragEnter(ev){
@@ -55,7 +58,7 @@ export class RoboRenG2AppComponent {
       ev.dataTransfer.effectAllowed = 'move'
       ev.dataTransfer.dropEffect = 'move'
       }
-  onDragover(ev){
+  onDragOver(ev){
       this.isValidDrop=true 
       ev.dataTransfer.effectAllowed = 'move'
       ev.dataTransfer.dropEffect = 'move'
@@ -66,57 +69,42 @@ export class RoboRenG2AppComponent {
       ev.dataTransfer.dropEffect = 'move'
       }
   onDrop(ev){
-    console.log('ev on drop')
-    console.log(ev)
- //   let effect = ev.dataTransfer.dropEffect
-  //  let effectAllowed = ev.dataTransfer.effectAllowed
-    //console.log('this.isValidDrop') //console.log(this.isValidDrop)
-     if(this.isValidDrop){
-       let startedId =  this.dragDidStartOn
-       let fromList = this.whichList(startedId)
-       let fromItem = this.whichIndex(startedId)
-     //  console.log('you were dragging list' + fromList)
-     //  console.log('youwere dragging index' + fromItem)
-      // this.listsData[fromList].listItems[fromItem].selected = true
-        let id = ev.target.id
-        let list = this.whichList(id) 
-        let index = this.whichIndex(id)
-
+//    console.log('ev on drop')
+//    console.log(ev)
+////    let effect = ev.dataTransfer.dropEffect
+//    let effectAllowed = ev.dataTransfer.effectAllowed
+//    console.log('this.isValidDrop') //console.log(this.isValidDrop)
+//     if(this.isValidDrop){
+//        //let startedId =  this.dragDidStartOn
+//        //let fromList = this.whichList(startedId)
+//         //let fromItem = this.whichIndex(startedId)
+//        //console.log('you were dragging list' + fromList)
+//        //console.log('youwere dragging index' + fromItem)
+//        //this.listsData[fromList].listItems[fromItem].selected = true
+//        let id = ev.target.id
+//        let list = this.whichList(id) 
+//        let index = this.whichIndex(id)
+//
         
       ev.dataTransfer.getData('dragDidStartOn')
-      this.listsData = this.modelService.injectDrop(ev.target.id)
+      this.listsData = this.modelService.doDropData(ev.target.id)
       this.modelService.resetAllSelectionsToFalse()
-    //  ev.dataTransfer.getData('selectedFiles')
-      // let another =  this.getSelected(true)
-//            //console.log('drop ev') //console.log(ev)
-       //  let uid = ev.target.id
-//            // console.log('uid')
-//            console.log('(this.dwragDidStartOn)')
-  //     this.listsData[list].listItems.push(another[0]) 
-//            console.log(this.dragDidStartOn)
-       //  let itemMoving = this.listsData[fromList].listItems).splice(fromItem, 1))[0] 
-         //let itemMoving = (this.whichList(this.dragDidStartOn).splice(this.whichIndex(this.dragDidStartOn), 1))[0] 
-//            console.log('itewmMoving')
-//            console.log(itemMoving)
-       //  this.listsData[list].listItems).splice(index, 0, itemMoving )
-         //let replaceMoved = this.whichList(uid).splice(this.whichIndex(uid),0, itemMoving )
-      }
-      else{
-          ev.dataTransfer.clearData()
-          }
           
           ev.dataTransfer.clearData()
-    this.didDropOn = ev.target.id
-    console.log(this.didDropOn) 
+    /*this.didDropOn = ev.target.id*/
+    /*console.log(this.didDropOn) */
   }
 
   onDragEnd(ev){
     console.log('dragend')
-    this.selectionsMap.clear()
-    //console.log(ev)
+      this.modelService.resetAllSelectionsToFalse()
+      this.isbeingDrugOver = false
+      this.isSelected = false
+      this.isValidDrop = false
+      ev.dataTransfer.clearData()
    }
   onClick(ev){
-
+console.log(ev)
   console.log(this.listsData)
     console.log('this clicked component start')
 //    console.log(this)
@@ -134,7 +122,7 @@ export class RoboRenG2AppComponent {
 
     console.log('herherheherh')
 
-    let  isSelected = this.listsData[list].listItems[index].selected
+    let  isSelected = this.listsData[list].listItems[index][ 'selected' ]
     
     if(isSelected){
       isSelected = false 
@@ -161,10 +149,6 @@ export class RoboRenG2AppComponent {
        // console.log('mapping') 
        // console.log(mapping)
 //       //     }
-    let dummySet = this.selectionsMap.set('delete','me')
-    let x = Array.from(this.selectionsMap.keys())
-    console.log('map after click.')
-    console.log(x)
 
   }
   whichList(listUid){

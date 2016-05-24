@@ -29,8 +29,8 @@ describe('DragDropModelTemplate', () => {
 
       expect(x.conformModel()[0].header).toEqual('a');
       expect(x.conformModel()[1].header).toEqual('x');
-      expect(x.conformModel()[0].listItems[1].viewText).toEqual('c');
-      expect(x.conformModel()[1].listItems[1].uid).toEqual('B_2');
+      expect(x.conformModel()[0].listItems[1].viewText).toEqual('b');
+      expect(x.conformModel()[1].listItems[1].uid).toEqual('1_1');
     });
 });
 

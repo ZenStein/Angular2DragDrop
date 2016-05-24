@@ -1,4 +1,3 @@
-
 import {UidGenerator} from './uid-generator'
 
 export class DragDropModelTemplate {
@@ -32,7 +31,7 @@ idGenerator
         return  {header:'',listUid:'', listItems:[]}
     }
      getListItemTemplate(){
-        return  {viewText:'',uid:''}
+        return  {viewText:'',uid:'', selected:'false'}
     }
     tester(){}
     private conformFromArrayStrings(){
@@ -43,7 +42,7 @@ idGenerator
             console.log(list)
             listTmpl.header = list[0]
             listTmpl.listUid=this.idGenerator.generate(i)
-            for(let x=1;x<list.length;x++){
+            for(let x=0;x<list.length;x++){
                 let newListItem = this.getListItemTemplate()
                 newListItem.viewText=list[x]
                 newListItem.uid = this.idGenerator.generate(i,x)

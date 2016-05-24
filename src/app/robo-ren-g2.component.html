@@ -1,9 +1,9 @@
 <style>
 .is-selected{
-    background-color: lightblue;
+    background-color: lightblue !important;
 }
 .original{
-    background-color: gray;
+    background-color: gray !important;
 }
 .dragged-over{
     background-color: white;
@@ -18,10 +18,15 @@
     <div id="{{lists.listUid}}">
     <h1>{{lists.header}}</h1>
     <ul>
-      <li  [ngClass]="{'is-selected': listsData[i].listItems[j].selected}"  *ngFor="let listItem of lists.listItems; let j = index" id="{{i}}_{{j}}"  csDragger>{{listItem.viewText}}</li>
+        <li   [ngClass]="{'is-selected': listsData[i].listItems[j].selected, 'dragged-over': isbeingDrugOver}"  *ngFor="let listItem of lists.listItems; let j = index" id="{{listItem.uid}}"  csDragger>
+          {{listItem.viewText}}
+
+          <list-item (listItemLocation)="listItemLocation(listItem, $event)" id="{{i}}_{{j}}"></list-item>
+      </li>
     </ul>
     </div>
 </div>
+
 
 
 
