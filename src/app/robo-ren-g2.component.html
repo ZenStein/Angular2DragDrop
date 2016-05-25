@@ -1,27 +1,28 @@
 <style>
 .is-selected{
-    background-color: lightblue;
+    background-color: lightblue !important;
 }
 .original{
-    background-color: gray;
+    background-color: gray !important;
 }
 .dragged-over{
     background-color: white;
-
 }
 </style>
 <h1>
  here  {{title}}
 </h1>
+<div (drop)="$event.preventDefault()">
 <div>{{listsData | json}}</div>
 <div class="list-container" *ngFor="let lists of listsData; let i = index">
     <div id="{{lists.listUid}}">
     <h1>{{lists.header}}</h1>
     <ul>
-      <li  [ngClass]="{'is-selected': listsData[i].listItems[j].selected}"  *ngFor="let listItem of lists.listItems; let j = index" id="{{i}}_{{j}}"  csDragger>{{listItem.viewText}}</li>
+        <li   [ngClass]="{'is-selected': listsData[i].listItems[j].selected, 'dragged-over': isbeingDrugOver}"  *ngFor="let listItem of lists.listItems; let j = index" id="{{lists.listUid}}_{{j}}"  csDragger>
+          {{listItem.viewText}}
+
+      </li>
     </ul>
-    </div>
+ </div> 
 </div>
-
-
-
+</div>

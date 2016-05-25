@@ -32,7 +32,7 @@ idGenerator
         return  {header:'',listUid:'', listItems:[]}
     }
      getListItemTemplate(){
-        return  {viewText:'',uid:''}
+        return  {viewText:'',uid:'', selected: false}
     }
     tester(){}
     private conformFromArrayStrings(){
@@ -46,7 +46,7 @@ idGenerator
             for(let x=1;x<list.length;x++){
                 let newListItem = this.getListItemTemplate()
                 newListItem.viewText=list[x]
-                newListItem.uid = this.idGenerator.generate(i,x)
+                newListItem.uid = this.idGenerator.generate(i,x-1)
                 listTmpl.listItems.push(newListItem)   
                 console.log(x)
             }

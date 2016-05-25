@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
 selector: '[csDragger]',
@@ -8,64 +8,65 @@ host:{
 '(dragover)':'onDragOver($event)',
 '(dragleave)':'onDragLeave($event)',
 '(drop)':'onDrop($event)',
-'(click)':'onClick($event)'
-
+'(click)':'onClick($event)'//,
+//'(hasclass)':'hasClass()'
 }
 })
-export class CsLiDragger {
 
+
+export class CsLiDragger {
+//removeCLass
+//addClass
+//
     constructor(private el: ElementRef) {
-        this.el = el
+        this.el = el;
         this.el.nativeElement.draggable = true;
     }
     onDragLeave(ev){
-        this.el.nativeElement.className = 'original'
+        this.removeCLass('dragged-over') 
+        this.addClass('original')
     }
-    onClick(ev){
-
-    console.log('this clicked directive start')
-    console.log(this)
-    console.log(ev)
-    console.log('ev from click Directive end')
-   // let elem = this.el.nativeElement.className
-    //  if(/is-selected/.test(elem)){
-    //      this.el.nativeElement.className = elem.replace(/is-selected/g, '') 
-//  data = [ ['header1','AAA','BBB'],
-//           ['List 2','CCC','DDD'],
-//           ['header3','XXX','ZZZ'] 
-//         ]
-//  data = [ ['header1','AAA','BBB'],
-//           ['List 2','CCC','DDD'],
-//           ['header3','XXX','ZZZ'] 
-//         ]
-//  data = [ ['header1','AAA','BBB'],
-//           ['List 2','CCC','DDD'],
-//           ['header3','XXX','ZZZ'] 
-//         ]
-    //  }
-    //  else{
-//          console.log('selected this')
-//          console.log(this)
-//console.log('click event')
-//console.log(ev)
-
-
-      //    this.el.nativeElement.className = ' is-selected'
-      //  }
+    onClick( ev){
+        console.log('this clicked directive start')
+        console.log(this)
+        console.log(ev)
+        console.log('ev from click Directive end')
     }
     onDrop(ev){
-        this.el.nativeElement.className = 'original '
+        this.removeCLass('is-selected')
+        this.removeCLass('dragged-over')
+
+        this.addClass('original')
     }
-    onDragEnd(){
-        this.el.nativeElement.className = 'original '
+    onDragEnd(ev){
+        ev.preventDefault()
+        
+        if(this.hasClass('is-selected')){
+           this.removeCLass('is-selected')
+        }
+        this.addClass('original')
     }
     onDragOver(ev){
         ev.preventDefault()
-        this.el.nativeElement.className = 'dragged-over'
+        if(this.hasClass('draggged-over')){
+            return false
+        }
+        this.addClass('dragged-over')
+        //this.el.nativeElement.className = 'dragged-over'
     }
     onDragStart(ev){
         ev.dataTransfer.effectAllowed = 'move'
     }
-
+     hasClass(cssClass: string){
+        let reg = new RegExp(cssClass, "g")
+        return this.el.nativeElement.className.match(cssClass) 
+    }
+    addClass(cssClass: string){
+        this.el.nativeElement.className += " "+cssClass+" ";     
+    }
+    removeCLass(cssClass: string){
+       let  reg = new RegExp(cssClass,"g");
+       this.el.nativeElement.className.replace(reg, '') 
+    }
 
 }

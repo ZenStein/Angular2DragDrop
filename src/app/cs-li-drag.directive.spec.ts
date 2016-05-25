@@ -6,24 +6,26 @@ import {
   expect,
   iit,
   it,
-  inject
+  inject,
 } from '@angular/core/testing';
 import {ComponentFixture, TestComponentBuilder} from '@angular/compiler/testing';
 import { provide, Component } from '@angular/core';
-import { CsLiDrag } from './cs-li-drag.directive';
+import { CsLiDragger } from './cs-li-dragger.directive';
 
 @Component({
-  selector: 'test-component',
-  template: `<div cs-li-drag></div>`
+  selector: 'cs-dragger',
+  template: `<div class="is-selected" cs-dragger></div>`
 })
 class TestComponent {}
 
-describe('CsLiDrag Directive', () => {
+describe('CsLiDragger Directive', () => {
   beforeEachProviders((): any[] => []);
-
+    
   it('should ...', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
     return tcb.createAsync(TestComponent).then((fixture: ComponentFixture<any>) => {
       fixture.detectChanges();
+      let x = fixture.componentInstance
+      expect(x.hasClass('is-selected')).toBe(true)
     });
   })));
 });
