@@ -1,24 +1,45 @@
 <style>
 .is-selected{
-    background-color: lightblue !important;
+    background-color:lightblue;
+        cursor: move;
 }
 .original{
-    background-color: gray !important;
+    cursor: move;
+    background-color: gray;
 }
 .dragged-over{
     background-color: white;
+        cursor: move;
 }
+.drag-out{
+background-color: purple;
+}
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+ .blackback{
+background-color: purple;
+ }
 </style>
 <h1>
  here  {{title}}
 </h1>
+<list-controls> </list-controls>
 <div (drop)="$event.preventDefault()">
 <div>{{listsData | json}}</div>
-<div class="list-container" *ngFor="let lists of listsData; let i = index">
+<div>item isvalid: {{isValidDrop}}</div>
+<div>list isvalid: {{canDropToList}}</div>
+<div class="noselect list-container"   *ngFor="let lists of listsData; let i = index">
     <div id="{{lists.listUid}}">
-    <h1>{{lists.header}}</h1>
+        <h1 id="list_{{i}}" ListDropper  [ngClass]="{blackback: canDropToList}" (listDropperIsDragged)="setCanDropToList($event)" >{{lists.header}}</h1>
     <ul>
-        <li   [ngClass]="{'is-selected': listsData[i].listItems[j].selected, 'dragged-over': isbeingDrugOver}"  *ngFor="let listItem of lists.listItems; let j = index" id="{{lists.listUid}}_{{j}}"  csDragger>
+        <li #item_{{j}}  class="noselect" csSelected  [ngClass]="" (dropSpotValid)="setIsValidDrop($event)" (selectionToggle)="selectionMade($event)" *ngFor="let listItem of lists.listItems; let j = index" id="{{lists.listUid}}_{{j}}" csDragger >
           {{listItem.viewText}}
 
       </li>

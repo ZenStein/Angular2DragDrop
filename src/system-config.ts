@@ -29,7 +29,7 @@ const barrels: string[] = [
   // App specific barrels.
   'app',
   'app/shared',
-  'app/cs-li-drag-component',
+  'app/list-controls',
   /** @cli-barrel */
 ];
 

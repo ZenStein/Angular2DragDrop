@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 
 interface csDndListTemplate {
     header:string,
@@ -28,7 +27,6 @@ interface uidLocator{
 //}
 //interface TwoDindexes { listDx: string : number, itemDx: string: number }
 //declare type _locator_Map_ = Map<[{}], [{}]> 
-@Injectable()
 export class ListModelService {
 
         locatorsMap = []  
@@ -39,6 +37,7 @@ export class ListModelService {
 model:[csDndListTemplate] 
 //antiDom 
 selectedItemsCollection:[Object]
+lastSetCoordinates = []
    // constructor(model: csDndLisTemplate[Object] | string[][]){
      // this.model = model 
    // }
@@ -53,32 +52,32 @@ selectedItemsCollection:[Object]
   //      }
  // }
 //  toRemoveMap(){
-//  //  this. selectedItemsCollection = {0:[]}
+//  //  this. csSelectedItemsCollection = {0:[]}
 //   let that = this
 //   this.modelIterator(function(listItem, listIndex, itemIndex){
-//     if(listItem.selected){
+//     if(listItem.csSelected){
 //         if(typeof that.selectedItemsCollection[listIndex] == 'Array'){
-//            that.selectedItemsCollection[listIndex].listItems.push(itemIndex)
+//            that.csSelectedItemsCollection[listIndex].listItems.push(itemIndex)
 //         }
 //         else{
 //            let num =  parseInt(listIndex)
-//             that.selectedItemsCollection[num] ={header:'', listUid:'', listItems:[''] }
+//             that.csSelectedItemsCollection[num] ={header:'', listUid:'', listItems:[''] }
 //
-//              that.selectedItemsCollection[num].push(itemIndex)
+//              that.csSelectedItemsCollection[num].push(itemIndex)
 //         }
 //
-//       //selectedItemsCollection[listIndex].push
+//       //csSelectedItemsCollection[listIndex].push
 //       //let mapping = [listIndex, itemIndex]
-//      // that.selectedItemsCollection[listIndex].push(itemIndex)
+//      // that.csSelectedItemsCollection[listIndex].push(itemIndex)
 //       //.push(Array.prototype.splice.apply((that.model[listIndex].listItems),[0,1])[0])
 //      // .push(clone)
 //      // delete listItem
 //     }
 //     })
 //    // return this.model
-//   //console.log('selectedbelow')
-//   //console.log(this.selectedItemsCollection)
-//   return this.selectedItemsCollection
+//   ////console.log('csSelectedbelow')
+//   ////console.log(this.csSelectedItemsCollection)
+//   return this.csSelectedItemsCollection
 //  }
   selectedItems(){
     let that = this
@@ -90,20 +89,20 @@ selectedItemsCollection:[Object]
 //      this.antiDom[listIndex].listItems.push(listItem)
       }
       })
-    console.log('selectedbelow')
-    console.log(this.selectedItemsCollection)
+    ////console.log('selectedbelow')
+    ////console.log(this.selectedItemsCollection)
     return this.selectedItemsCollection
     
     }
 //  injectDrop(dropSpotUid: string){
 //      let forRemoval = this.removeItems()
 //    this.swap(dropSpotUid,forRemoval)
-//    console.log('this.model after swap')
-//    console.log(this.model)
+//    //console.log('this.model after swap')
+//    //console.log(this.model)
 //    return this.model
 //  }
 //  swap(listUid: string, data: any[]){
-//      console.log('coming in: ' + listUid)
+//      //console.log('coming in: ' + listUid)
 //      
 //    let list = this.toRemoveMap()
 //    let target = this.parseToList(listUid)
@@ -113,25 +112,25 @@ selectedItemsCollection:[Object]
 //
 //        if(x == target){
 //        //add to array. this is the drop.
-//            console.log('found target for drop')
+//            //console.log('found target for drop')
 //            Array.prototype.splice.apply(this.model[x].listItems, [targetIndex, 0].concat(data))
 //        }
 //        else{
-//        // remove these selected.
+//        // remove these csSelected.
 //            
 //        }
 //    }
 //    //let start = this.parseToListItem(listUid)
-//     // console.log('start: ' + start)
+//     // //console.log('start: ' + start)
 //   // let list = this.doGetList(listUid)
 //   // let start = this.parseToListItem(listUid)
-//   //   console.log('start: ' + start)
-//   //   console.log('list: '+ list)
+//   //   //console.log('start: ' + start)
+//   //   //console.log('list: '+ list)
 //   // let argsList = [start, 0].concat(data)
-//   // console.log(argsList)
-//   // console.log(this.doGetList(listUid))
-//   // console.log(list)
-//   // console.log(argsList)
+//   // //console.log(argsList)
+//   // //console.log(this.doGetList(listUid))
+//   // //console.log(list)
+//   // //console.log(argsList)
 //
 //  // Array.prototype.splice.apply(list.listItems,argsList)  
 //    list.listItems.concat(data)
@@ -146,13 +145,14 @@ selectedItemsCollection:[Object]
 //      
 //  }
   doSet(uid: string, prop: string, value: string | boolean){
-      console.log(uid)
+      //console.log(uid)
     let list = this.parseToList(uid)
     let item = this.parseToListItem(uid)
-    console.log('dosetlist and item')
-    console.log(list+'    '+ item)
+    //console.log('dosetlist and item')
+    //console.log(list+'    '+ item)
        if(this.model[list] != undefined){
             if(this.model[list].listItems[item] != undefined){ 
+                this.lastSetCoordinates = [list,item]
              this.model[list].listItems[item][prop]= value
              return value
             }
@@ -163,7 +163,7 @@ selectedItemsCollection:[Object]
 
   
 //  doGetList(uid: string){
-//      console.log('doGetwa passed: '+ uid )
+//      //console.log('doGetwa passed: '+ uid )
 //    return this.model[this.parseToList(uid)]  
 //  }
 //  getTemplate(value){
@@ -195,24 +195,33 @@ mapSelectedInModel(){
      if(listItem.selected){
          let dexes: uidLocator = { listDx: listIndex, itemDx: itemIndex }
         that.locatorsMap.push(dexes)
-        that.injectionBlock.push(listItem)
-        console.log('locators map inside model iterater')
-        console.log(that.locatorsMap)
+        let listItemClone = Object.assign({}, listItem)
+        //console.log('START')
+        //console.log(listItem)
+        //console.log(listItemClone)
+        //console.log('END')
+        that.injectionBlock.push(listItemClone)
+        //console.log('locators map inside model iterater')
+        //console.log(that.locatorsMap)
      }
    })
    return this.injectionBlock
+}
+flushSelectedLineup(){
+this.injectionBlock = []
+this.locatorsMap = []
 }
 
 
 doDropData(whereUid: string){
     let indexs =this.parseLocationFor( whereUid)
-   console.log('do drop parse location for') 
-   console.log(indexs) 
-   console.log(this.locatorsMap) 
+   //console.log('do drop parse location for') 
+   //console.log(indexs) 
+   //console.log(this.locatorsMap) 
     let injectDx =indexs.itemDx  
     let model = this.model
     let that = this
-       console.log(this.locatorsMap) 
+       //console.log(this.locatorsMap) 
         for(let aRemovable  in this.injectionBlock){
             let remove = this.injectionBlock[aRemovable]
            this.modelIterator(function(item,listIndex,itemIndex){
@@ -224,8 +233,8 @@ doDropData(whereUid: string){
         }
 //   for(let dxs in this.locatorsMap){
 //       let indexOf = this.locatorsMap[dxs]
-//       console.log('indexOf'); console.log(indexOf); console.log('injectDx'); console.log(model); console.log('injectionblock'); console.log(this.injectionBlock)
-//       let ghost: csDndListItemTemplate = {viewText:'',uid:'ghost', selected: false}
+//       //console.log('indexOf'); //console.log(indexOf); //console.log('injectDx'); //console.log(model); //console.log('injectionblock'); //console.log(this.injectionBlock)
+//       let ghost: csDndListItemTemplate = {viewText:'',uid:'ghost', csSelected: false}
 //          model[indexOf.listDx].listItems.splice(indexOf.itemDx, 1, ghost)
 //   }
 //   for(let dxs in this.locatorsMap){
@@ -233,15 +242,8 @@ doDropData(whereUid: string){
 //          model[indexOf.listDx].listItems.splice(indexOf.itemDx, 1)
 //   }
     let targetLen = model[indexs.listDx].listItems.length
-    console.log('targetLen')
-    console.log(targetLen)
-    if(injectDx >= targetLen ){
-        model[indexs.listDx].listItems.concat(this.injectionBlock)
-    }
-    else{
         let injector = [injectDx, 0].concat(this.injectionBlock)
        Array.prototype.splice.apply(model[indexs.listDx].listItems, injector) 
-    }
 
     this.modelIterator(function(item, listIndex, itemIndex){
         item.uid = `${listIndex}_${itemIndex}`
@@ -249,19 +251,22 @@ doDropData(whereUid: string){
     this.injectionBlock = []
        return this.model
 }
+getModel(){
+return this.model
+}
   parseToList(listUid){
      let x = listUid.replace(/_[\d]*/g, '')
-     console.log('xxx whichlist')
-     console.log(x)
+     //console.log('xxx whichlist')
+     //console.log(x)
      return x
      //return this.listsData[x].listItems      
   }
    parseToListItem(listUid){
-    console.log('which index below first arg then result')
+    //console.log('which index below first arg then result')
     let x = listUid.replace(/[\d]*_/g, '')
-    console.log(listUid)
-    console.log(x)
-    console.log('which index below first arg then result bottom')
+    //console.log(listUid)
+    //console.log(x)
+    //console.log('which index below first arg then result bottom')
 
     return x
   }
