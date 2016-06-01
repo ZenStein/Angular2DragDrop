@@ -9,7 +9,7 @@ import { Directive, Output,  ElementRef, Input, EventEmitter} from '@angular/cor
   },
 })
 export class CsSelected {
-    @Output() selectionToggle = new EventEmitter()
+    @Output() selectiontoggle = new EventEmitter()
 private el: HTMLElement
 private selected: boolean
 private id: string
@@ -25,8 +25,10 @@ console.log(ev)
 
   private toggle(ev){
       console.log('hit')
+      console.log(ev)
+      console.log(ev.shiftKey)
       this.selected = !this.selected
       ev.preventDefault()
-      this.selectionToggle.emit({id: this.el.id, selectionMade: this.selected})
+      this.selectiontoggle.emit({id: this.el.id, selectionMade: this.selected, shiftKey: ev.shiftKey})
   }
 }

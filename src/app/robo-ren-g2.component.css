@@ -1,8 +1,41 @@
-.list-container{
+.list-containerssss{
     background-color: grey;
     position: relative;
     height: 500px;
     width: 200px;
     float: left;
+    clear:both;
    margin-left: 50px; 
 }
+
+.is-selected{
+    background-color:lightblue;
+        cursor: move;
+}
+.original{
+    cursor: move;
+    background-color: gray;
+}
+.dragged-over{
+    background-color: white;
+        cursor: move;
+}
+.drag-out{
+background-color: purple;
+}
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+      height: 300px;
+      width:10%;
+                  
+}
+ .blackback{
+background-color: purple;
+ }
+

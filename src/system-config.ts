@@ -3,12 +3,35 @@
  **********************************************************************************************/
 /** Map relative paths to URLs. */
 const map: any = {
+  '@angular2-material': 'vendor/@angular2-material'
 };
 
 /** User packages configuration. */
-const packages: any = {
-};
+const materialPackages:string[] = [
+  'core',
+  'toolbar',
+  'icon',
+  'button',
+  'sidenav',
+  'list',
+  'card',
+  'input',
+  'radio',
+  'checkbox'
+];
 
+const packages:any = createCustomConfig(materialPackages);
+
+function createCustomConfig(packages: string[]): any {
+  return packages.reduce((packageConfig: any, packageName: string) => {
+    packageConfig[`@angular2-material/${packageName}/`] = {
+      format: 'cjs',
+      defaultExtension: 'js',
+      main: packageName
+    };
+    return packageConfig;
+  }, {});
+}   
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /***********************************************************************************************
  * Everything underneath this line is managed by the CLI.
@@ -30,11 +53,14 @@ const barrels: string[] = [
   'app',
   'app/shared',
   'app/list-controls',
+  'app/material-list',
   /** @cli-barrel */
 ];
 
-const cliSystemConfigPackages: any = {};
+//const 
+var cliSystemConfigPackages: any = {};
 barrels.forEach((barrelName: string) => {
+    console.log(barrelName)
   cliSystemConfigPackages[barrelName] = { main: 'index' };
 });
 

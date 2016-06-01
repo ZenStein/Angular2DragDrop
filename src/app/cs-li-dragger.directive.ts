@@ -16,7 +16,7 @@ host:{
 
 export class CsLiDragger {
 private selected = false
-    @Output() dropSpotValid   = new EventEmitter()
+    @Output() dropspotvalid   = new EventEmitter()
     @Output() selectionChange = new EventEmitter()
    
     constructor(private el: ElementRef) {
@@ -39,34 +39,35 @@ private selected = false
     onDragLeave(ev){
         console.log('drag leave')
         this.removeCLass('dragged-over') 
-        this.dropSpotValid.emit(false)
+        this.dropspotvalid.emit(false)
     }
     onDrop(ev){
         this.removeCLass('dragged-over')
     }
     onDragEnd(ev){
         ev.preventDefault()
-        this.dropSpotValid.emit(false)
+        this.dropspotvalid.emit(false)
         this.selected = false
         this.selectionChange.emit(false)
         this.removeCLass('dragged-over')
     }
     onDragEnter(ev){
         if(this.selected){
-            this.dropSpotValid.emit(false)
+            this.dropspotvalid.emit(false)
         }
         else{
             this.includeClass('dragged-over')
-            this.dropSpotValid.emit(true)
+            this.dropspotvalid.emit(true)
         }
     }
     onDragOver(ev){
+        console.log('dragover')
         ev.preventDefault()
         if(this.selected){
-            this.dropSpotValid.emit(false)
+            this.dropspotvalid.emit(false)
         }
         else{
-            this.dropSpotValid.emit(true)
+            this.dropspotvalid.emit(true)
         }
     }
     onDragStart(ev){
